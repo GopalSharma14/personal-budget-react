@@ -1,8 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Chart from '../Component/Chart';
 import BasicD3 from '../Component/BasicD3'
+import axios from 'axios';
+
 
 function HomePage() {
+  const [data, setData] = useState({});
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await axios(
+        'http://localhost:3000/budget',
+      );
+ 
+      setData(result.data.myBudget);
+    };
+ 
+    fetchData();
+  }, []);
+
+  
   return (
     <main className=" container center" id="main">
       <div
@@ -66,8 +82,15 @@ function HomePage() {
 
         <div className="text-box">
           <h1>Personal</h1>
-          {/* <BasicD3/> */}
-        </div>
+          <div>
+        <BasicD3
+          data={data}
+          width={200}
+          height={200}
+          innerRadius={60}
+          outerRadius={100}
+        />
+      </div>        </div>
  
         <div className="text-box">
           <h1>Free</h1>
